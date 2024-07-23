@@ -1,4 +1,4 @@
-<Activity mc:Ignorable="sap sap2010" x:Class="test_capcha" xmlns="http://schemas.microsoft.com/netfx/2009/xaml/activities" xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" xmlns:s="clr-namespace:System;assembly=System.Private.CoreLib" xmlns:sap="http://schemas.microsoft.com/netfx/2009/xaml/activities/presentation" xmlns:sap2010="http://schemas.microsoft.com/netfx/2010/xaml/activities/presentation" xmlns:sc="clr-namespace:System.ComponentModel;assembly=System.ComponentModel.TypeConverter" xmlns:scg="clr-namespace:System.Collections.Generic;assembly=System.Private.CoreLib" xmlns:sco="clr-namespace:System.Collections.ObjectModel;assembly=System.Private.CoreLib" xmlns:ui="http://schemas.uipath.com/workflow/activities" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+<Activity mc:Ignorable="sap sap2010" x:Class="utils_bypass_captcha" xmlns="http://schemas.microsoft.com/netfx/2009/xaml/activities" xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" xmlns:s="clr-namespace:System;assembly=System.Private.CoreLib" xmlns:sap="http://schemas.microsoft.com/netfx/2009/xaml/activities/presentation" xmlns:sap2010="http://schemas.microsoft.com/netfx/2010/xaml/activities/presentation" xmlns:sc="clr-namespace:System.ComponentModel;assembly=System.ComponentModel.TypeConverter" xmlns:scg="clr-namespace:System.Collections.Generic;assembly=System.Private.CoreLib" xmlns:sco="clr-namespace:System.Collections.ObjectModel;assembly=System.Private.CoreLib" xmlns:ui="http://schemas.uipath.com/workflow/activities" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
   <x:Members>
     <x:Property Name="_strImgBase64" Type="InArgument(x:String)" />
     <x:Property Name="_strApiKey" Type="InArgument(x:String)" />
@@ -7,7 +7,7 @@
   <VisualBasic.Settings>
     <x:Null />
   </VisualBasic.Settings>
-  <sap:VirtualizedContainerService.HintSize>1111,1497</sap:VirtualizedContainerService.HintSize>
+  <sap:VirtualizedContainerService.HintSize>1111,3971</sap:VirtualizedContainerService.HintSize>
   <sap2010:WorkflowViewState.IdRef>test_capcha_1</sap2010:WorkflowViewState.IdRef>
   <TextExpression.NamespacesForImplementation>
     <scg:List x:TypeArguments="x:String" Capacity="60">
@@ -48,6 +48,8 @@
       <x:String>UiPath.UIAutomationCore.Contracts</x:String>
       <x:String>UiPath.Web</x:String>
       <x:String>UiPath.Web.Activities</x:String>
+      <x:String>System.Xml.Serialization</x:String>
+      <x:String>System.Linq.Expressions</x:String>
     </scg:List>
   </TextExpression.NamespacesForImplementation>
   <TextExpression.ReferencesForImplementation>
@@ -101,91 +103,60 @@
       <AssemblyReference>UiPath.Web.Activities</AssemblyReference>
       <AssemblyReference>UiPath.Workflow</AssemblyReference>
       <AssemblyReference>WindowsBase</AssemblyReference>
+      <AssemblyReference>System.Private.Xml</AssemblyReference>
+      <AssemblyReference>UiPath.Excel.Activities.Design</AssemblyReference>
+      <AssemblyReference>System.Private.ServiceModel</AssemblyReference>
+      <AssemblyReference>System.Runtime.Serialization.Formatters</AssemblyReference>
+      <AssemblyReference>System.Private.DataContractSerialization</AssemblyReference>
+      <AssemblyReference>System.Runtime.Serialization.Primitives</AssemblyReference>
+      <AssemblyReference>System.Linq.Async</AssemblyReference>
+      <AssemblyReference>System.Collections.NonGeneric</AssemblyReference>
+      <AssemblyReference>System.Linq.Expressions</AssemblyReference>
     </sco:Collection>
   </TextExpression.ReferencesForImplementation>
-  <Sequence DisplayName="utils_2_captcha_api" sap:VirtualizedContainerService.HintSize="520,1432" sap2010:WorkflowViewState.IdRef="Sequence_1">
+  <Sequence sap2010:Annotation.AnnotationText="*** DESCRIPTION ***&#xA;-  Bypass the captcha uses 2captcha service&#xD;&#xA;!!!CAN BYPASS KIND OF CAPTCHA LIKE TEXT AND NUMBER ONLY!!!&#xD;&#xA;&#xD;&#xA;*** INPUT ***&#xD;&#xA;- _strApiKey //2captcha api key&#xD;&#xA;- _strImgBase64 // the base64 string that converted from image. ONLY need take screenshot and convert it to Base64 string. Ex: imgCapt.Base64&#xD;&#xA;&#xD;&#xA;*** OUTPUT ***&#xD;&#xA;_strCapcha //the output captcha string need to be bypass&#xA;&#xA;*** META ***&#xD;&#xA;UiPath.WebAPI.Activities = 1.21.0&#xD;&#xA;&#xA;Created on:    2024-07-23  ;  cuong.nguyen&#xA;Modified on:  2024-07-23  ;  cuong.nguyen" DisplayName="utils_bypass_captcha" sap:VirtualizedContainerService.HintSize="609,3906" sap2010:WorkflowViewState.IdRef="Sequence_1">
     <Sequence.Variables>
       <Variable x:TypeArguments="x:String" Name="strPostImgResult" />
       <Variable x:TypeArguments="x:Int32" Name="intStatusCode" />
       <Variable x:TypeArguments="x:String" Name="strCapchaResult" />
       <Variable x:TypeArguments="ui:Image" Name="imgCapcha" />
+      <Variable x:TypeArguments="ui:CurrentJobInfo" Name="jobInfo" />
     </Sequence.Variables>
     <sap:WorkflowViewStateService.ViewState>
       <scg:Dictionary x:TypeArguments="x:String, x:Object">
         <x:Boolean x:Key="IsExpanded">True</x:Boolean>
+        <x:Boolean x:Key="IsAnnotationDocked">True</x:Boolean>
       </scg:Dictionary>
     </sap:WorkflowViewStateService.ViewState>
-    <ui:LogMessage DisplayName="log_start" sap:VirtualizedContainerService.HintSize="458,173" sap2010:WorkflowViewState.IdRef="LogMessage_5" Level="Info" Message="[&quot;- Start solving captcha&quot;]" />
-    <ui:CommentOut DisplayName="Comment Out" sap:VirtualizedContainerService.HintSize="458,84" sap2010:WorkflowViewState.IdRef="CommentOut_1">
-      <ui:CommentOut.Body>
-        <Sequence DisplayName="Ignored Activities" sap:VirtualizedContainerService.HintSize="538,426" sap2010:WorkflowViewState.IdRef="Sequence_12">
-          <sap:WorkflowViewStateService.ViewState>
-            <scg:Dictionary x:TypeArguments="x:String, x:Object">
-              <x:Boolean x:Key="IsExpanded">True</x:Boolean>
-            </scg:Dictionary>
-          </sap:WorkflowViewStateService.ViewState>
-          <Sequence DisplayName="test" sap:VirtualizedContainerService.HintSize="496,340" sap2010:WorkflowViewState.IdRef="Sequence_11">
-            <sap:WorkflowViewStateService.ViewState>
-              <scg:Dictionary x:TypeArguments="x:String, x:Object">
-                <x:Boolean x:Key="IsExpanded">True</x:Boolean>
-                <x:Boolean x:Key="IsPinned">False</x:Boolean>
-              </scg:Dictionary>
-            </sap:WorkflowViewStateService.ViewState>
-            <ui:TakeScreenshot WaitBefore="{x:Null}" DisplayName="Take Screenshot 'IMG  captcha'" sap:VirtualizedContainerService.HintSize="434,107" sap2010:WorkflowViewState.IdRef="TakeScreenshot_1" Screenshot="[imgCapcha]">
-              <ui:TakeScreenshot.Target>
-                <ui:Target ClippingRegion="{x:Null}" Element="{x:Null}" Id="6f474326-f9c6-41fe-b585-44d46eac46f3" InformativeScreenshot="957d116d8b005e1b21929dbf94e3c112" Selector="&lt;html app='chrome.exe' title='Ngân hàng TMCP Hàng Hải Việt Nam - MSB' /&gt;&lt;webctrl css-selector='body&amp;gt;div&amp;gt;div&amp;gt;div&amp;gt;div&amp;gt;div&amp;gt;div&amp;gt;div&amp;gt;div&amp;gt;div&amp;gt;div&amp;gt;div&amp;gt;div&amp;gt;div&amp;gt;img' src='data:image/jpeg;base64,/9j/4AAQSkZJRgABAgAAAQABAAD/2wBDAAgGBgcGB*' tag='IMG' /&gt;">
-                  <ui:Target.TimeoutMS>
-                    <InArgument x:TypeArguments="x:Int32" />
-                  </ui:Target.TimeoutMS>
-                  <ui:Target.WaitForReady>
-                    <InArgument x:TypeArguments="ui:WaitForReady" />
-                  </ui:Target.WaitForReady>
-                </ui:Target>
-              </ui:TakeScreenshot.Target>
-              <sap:WorkflowViewStateService.ViewState>
-                <scg:Dictionary x:TypeArguments="x:String, x:Object">
-                  <x:Boolean x:Key="IsExpanded">True</x:Boolean>
-                  <x:Boolean x:Key="IsPinned">False</x:Boolean>
-                </scg:Dictionary>
-              </sap:WorkflowViewStateService.ViewState>
-            </ui:TakeScreenshot>
-            <Assign sap:VirtualizedContainerService.HintSize="434,82" sap2010:WorkflowViewState.IdRef="Assign_2">
-              <Assign.To>
-                <OutArgument x:TypeArguments="x:String">[_strImgBase64]</OutArgument>
-              </Assign.To>
-              <Assign.Value>
-                <InArgument x:TypeArguments="x:String">[imgCapcha.Base64]</InArgument>
-              </Assign.Value>
-            </Assign>
-          </Sequence>
-        </Sequence>
-      </ui:CommentOut.Body>
+    <ui:GetCurrentJobInfo DisplayName="get_current_job_info" sap:VirtualizedContainerService.HintSize="547,57" sap2010:WorkflowViewState.IdRef="GetCurrentJobInfo_1" Result="[jobInfo]" />
+    <ui:LogMessage DisplayName="log_starting_wf" sap:VirtualizedContainerService.HintSize="547,84" sap2010:WorkflowViewState.IdRef="LogMessage_13" Level="Info" Message="[String.Format(&quot;--- Starting: {0} ---&quot;, jobInfo.WorkflowName)]">
       <sap:WorkflowViewStateService.ViewState>
         <scg:Dictionary x:TypeArguments="x:String, x:Object">
           <x:Boolean x:Key="IsExpanded">False</x:Boolean>
           <x:Boolean x:Key="IsPinned">False</x:Boolean>
         </scg:Dictionary>
       </sap:WorkflowViewStateService.ViewState>
-    </ui:CommentOut>
-    <TryCatch DisplayName="Try Catch" sap:VirtualizedContainerService.HintSize="458,84" sap2010:WorkflowViewState.IdRef="TryCatch_1">
+    </ui:LogMessage>
+    <TryCatch sap2010:Annotation.AnnotationText="- Send the Base64 String to the 2captcha Server to bypass&#xD;&#xA;- Method: POST" DisplayName="tc_post_img" sap:VirtualizedContainerService.HintSize="547,1118" sap2010:WorkflowViewState.IdRef="TryCatch_1">
       <sap:WorkflowViewStateService.ViewState>
         <scg:Dictionary x:TypeArguments="x:String, x:Object">
-          <x:Boolean x:Key="IsExpanded">False</x:Boolean>
+          <x:Boolean x:Key="IsExpanded">True</x:Boolean>
           <x:Boolean x:Key="IsPinned">False</x:Boolean>
+          <x:Boolean x:Key="IsAnnotationDocked">True</x:Boolean>
         </scg:Dictionary>
       </sap:WorkflowViewStateService.ViewState>
       <TryCatch.Try>
-        <ui:RetryScope DisplayName="retry_post_img" sap:VirtualizedContainerService.HintSize="458,314" sap2010:WorkflowViewState.IdRef="RetryScope_3" NumberOfRetries="3" RetryInterval="[TimeSpan.FromSeconds(10)]">
+        <ui:RetryScope DisplayName="retry_post_img" sap:VirtualizedContainerService.HintSize="458,816" sap2010:WorkflowViewState.IdRef="RetryScope_3" NumberOfRetries="3" RetryInterval="[TimeSpan.FromSeconds(10)]">
           <ui:RetryScope.ActivityBody>
             <ActivityAction>
-              <Sequence DisplayName="post_image_get_id" sap:VirtualizedContainerService.HintSize="416,25" sap2010:WorkflowViewState.IdRef="Sequence_13">
+              <Sequence DisplayName="post_image_get_id" sap:VirtualizedContainerService.HintSize="416,527" sap2010:WorkflowViewState.IdRef="Sequence_13">
                 <sap:WorkflowViewStateService.ViewState>
                   <scg:Dictionary x:TypeArguments="x:String, x:Object">
-                    <x:Boolean x:Key="IsExpanded">False</x:Boolean>
+                    <x:Boolean x:Key="IsExpanded">True</x:Boolean>
                     <x:Boolean x:Key="IsPinned">False</x:Boolean>
                   </scg:Dictionary>
                 </sap:WorkflowViewStateService.ViewState>
-                <ui:HttpClient Body="{x:Null}" ConsumerKey="{x:Null}" ConsumerSecret="{x:Null}" ContinueOnError="{x:Null}" FileAttachments="{x:Null}" OAuth1Token="{x:Null}" OAuth1TokenSecret="{x:Null}" OAuth2Token="{x:Null}" ResourcePath="{x:Null}" ResponseAttachment="{x:Null}" ResponseHeaders="{x:Null}" SecureClientCertificatePassword="{x:Null}" SecurePassword="{x:Null}" AcceptFormat="ANY" AuthenticationType="None" BodyFormat="application/xml" ClientCertificate="[Nothing]" ClientCertificatePassword="[Nothing]" DisplayName="HTTP POST Request Image ID" EnableSSLVerification="True" EndPoint="https://2captcha.com/in.php" sap:VirtualizedContainerService.HintSize="388,102" sap2010:WorkflowViewState.IdRef="HttpClient_3" Method="POST" Password="[Nothing]" Result="[strPostImgResult]" StatusCode="[intStatusCode]" TimeoutMS="10000" Username="[Nothing]">
+                <ui:HttpClient Body="{x:Null}" ConsumerKey="{x:Null}" ConsumerSecret="{x:Null}" ContinueOnError="{x:Null}" FileAttachments="{x:Null}" OAuth1Token="{x:Null}" OAuth1TokenSecret="{x:Null}" OAuth2Token="{x:Null}" ResourcePath="{x:Null}" ResponseAttachment="{x:Null}" ResponseHeaders="{x:Null}" SecureClientCertificatePassword="{x:Null}" SecurePassword="{x:Null}" AcceptFormat="ANY" AuthenticationType="None" BodyFormat="application/xml" ClientCertificate="[Nothing]" ClientCertificatePassword="[Nothing]" DisplayName="post_http_request" EnableSSLVerification="True" EndPoint="https://2captcha.com/in.php" sap:VirtualizedContainerService.HintSize="354,102" sap2010:WorkflowViewState.IdRef="HttpClient_3" Method="POST" Password="[Nothing]" Result="[strPostImgResult]" StatusCode="[intStatusCode]" TimeoutMS="10000" Username="[Nothing]">
                   <ui:HttpClient.Attachments>
                     <scg:Dictionary x:TypeArguments="x:String, InArgument(x:String)" />
                   </ui:HttpClient.Attachments>
@@ -203,8 +174,14 @@
                   <ui:HttpClient.UrlSegments>
                     <scg:Dictionary x:TypeArguments="x:String, InArgument(x:String)" />
                   </ui:HttpClient.UrlSegments>
+                  <sap:WorkflowViewStateService.ViewState>
+                    <scg:Dictionary x:TypeArguments="x:String, x:Object">
+                      <x:Boolean x:Key="IsExpanded">True</x:Boolean>
+                      <x:Boolean x:Key="IsPinned">False</x:Boolean>
+                    </scg:Dictionary>
+                  </sap:WorkflowViewStateService.ViewState>
                 </ui:HttpClient>
-                <ui:LogMessage DisplayName="log_status" sap:VirtualizedContainerService.HintSize="388,173" sap2010:WorkflowViewState.IdRef="LogMessage_7" Level="Trace" Message="[&quot;-- status response : &quot;+intStatusCode.ToString]">
+                <ui:LogMessage DisplayName="log_status" sap:VirtualizedContainerService.HintSize="354,173" sap2010:WorkflowViewState.IdRef="LogMessage_7" Level="Trace" Message="[&quot;-- status response : &quot;+intStatusCode.ToString]">
                   <sap:WorkflowViewStateService.ViewState>
                     <scg:Dictionary x:TypeArguments="x:String, x:Object">
                       <x:Boolean x:Key="IsExpanded">True</x:Boolean>
@@ -212,7 +189,7 @@
                     </scg:Dictionary>
                   </sap:WorkflowViewStateService.ViewState>
                 </ui:LogMessage>
-                <ui:LogMessage DisplayName="log_result" sap:VirtualizedContainerService.HintSize="388,164" sap2010:WorkflowViewState.IdRef="LogMessage_8" Level="Trace" Message="[&quot;-- result post img : &quot;+strPostImgResult]">
+                <ui:LogMessage DisplayName="log_result" sap:VirtualizedContainerService.HintSize="354,164" sap2010:WorkflowViewState.IdRef="LogMessage_8" Level="Trace" Message="[&quot;-- result post img : &quot;+strPostImgResult]">
                   <sap:WorkflowViewStateService.ViewState>
                     <scg:Dictionary x:TypeArguments="x:String, x:Object">
                       <x:Boolean x:Key="IsExpanded">True</x:Boolean>
@@ -225,7 +202,7 @@
           </ui:RetryScope.ActivityBody>
           <ui:RetryScope.Condition>
             <ActivityFunc x:TypeArguments="x:Boolean">
-              <ui:CheckTrue ErrorMessage="{x:Null}" DisplayName="check_true" Expression="[strPostImgResult.Contains(&quot;OK|&quot;)]" sap:VirtualizedContainerService.HintSize="334,129" sap2010:WorkflowViewState.IdRef="CheckTrue_3">
+              <ui:CheckTrue ErrorMessage="{x:Null}" DisplayName="check_true" Expression="[strPostImgResult.ToUpper.Contains(&quot;OK|&quot;)]" sap:VirtualizedContainerService.HintSize="334,129" sap2010:WorkflowViewState.IdRef="CheckTrue_3">
                 <sap:WorkflowViewStateService.ViewState>
                   <scg:Dictionary x:TypeArguments="x:String, x:Object">
                     <x:Boolean x:Key="IsExpanded">True</x:Boolean>
@@ -260,7 +237,34 @@
         </Catch>
       </TryCatch.Catches>
     </TryCatch>
-    <ui:RetryScope DisplayName="retry_get_captcha_string" sap:VirtualizedContainerService.HintSize="458,928" sap2010:WorkflowViewState.IdRef="RetryScope_4" NumberOfRetries="5" RetryInterval="[TimeSpan.FromSeconds(20)]">
+    <If sap2010:Annotation.AnnotationText="sometimes, the 2captcha balance is out of money, It'll throw BE" Condition="[strPostImgResult.ToUpper.Contains(&quot;ZERO_BALANCE&quot;)]" DisplayName="check_if_zero_balance" sap:VirtualizedContainerService.HintSize="547,427" sap2010:WorkflowViewState.IdRef="If_5">
+      <sap:WorkflowViewStateService.ViewState>
+        <scg:Dictionary x:TypeArguments="x:String, x:Object">
+          <x:Boolean x:Key="IsAnnotationDocked">True</x:Boolean>
+        </scg:Dictionary>
+      </sap:WorkflowViewStateService.ViewState>
+      <If.Then>
+        <Sequence DisplayName="Then" sap:VirtualizedContainerService.HintSize="416,201" sap2010:WorkflowViewState.IdRef="Sequence_21">
+          <sap:WorkflowViewStateService.ViewState>
+            <scg:Dictionary x:TypeArguments="x:String, x:Object">
+              <x:Boolean x:Key="IsExpanded">True</x:Boolean>
+            </scg:Dictionary>
+          </sap:WorkflowViewStateService.ViewState>
+          <Throw DisplayName="throw_be" Exception="[New BusinessRuleException(&quot;2Captcha account has run out of money&quot;)]" sap:VirtualizedContainerService.HintSize="354,113" sap2010:WorkflowViewState.IdRef="Throw_4" />
+        </Sequence>
+      </If.Then>
+      <If.Else>
+        <Sequence DisplayName="Else" sap:VirtualizedContainerService.HintSize="416,25" sap2010:WorkflowViewState.IdRef="Sequence_22">
+          <sap:WorkflowViewStateService.ViewState>
+            <scg:Dictionary x:TypeArguments="x:String, x:Object">
+              <x:Boolean x:Key="IsExpanded">False</x:Boolean>
+              <x:Boolean x:Key="IsPinned">False</x:Boolean>
+            </scg:Dictionary>
+          </sap:WorkflowViewStateService.ViewState>
+        </Sequence>
+      </If.Else>
+    </If>
+    <ui:RetryScope sap2010:Annotation.AnnotationText="Get the captcha string which resolved " DisplayName="retry_get_captcha_string" sap:VirtualizedContainerService.HintSize="547,959" sap2010:WorkflowViewState.IdRef="RetryScope_4" NumberOfRetries="5" RetryInterval="[TimeSpan.FromSeconds(20)]">
       <ui:RetryScope.ActivityBody>
         <ActivityAction>
           <Sequence DisplayName="Action" sap:VirtualizedContainerService.HintSize="416,527" sap2010:WorkflowViewState.IdRef="Sequence_15">
@@ -269,7 +273,7 @@
                 <x:Boolean x:Key="IsExpanded">True</x:Boolean>
               </scg:Dictionary>
             </sap:WorkflowViewStateService.ViewState>
-            <ui:HttpClient Body="{x:Null}" ConsumerKey="{x:Null}" ConsumerSecret="{x:Null}" ContinueOnError="{x:Null}" FileAttachments="{x:Null}" OAuth1Token="{x:Null}" OAuth1TokenSecret="{x:Null}" OAuth2Token="{x:Null}" ResourcePath="{x:Null}" ResponseAttachment="{x:Null}" ResponseHeaders="{x:Null}" SecureClientCertificatePassword="{x:Null}" SecurePassword="{x:Null}" AcceptFormat="ANY" AuthenticationType="None" BodyFormat="application/xml" ClientCertificate="[Nothing]" ClientCertificatePassword="[Nothing]" DisplayName="HTTP GET Request get string Capcha" EnableSSLVerification="True" EndPoint="https://2captcha.com/res.php" sap:VirtualizedContainerService.HintSize="354,102" sap2010:WorkflowViewState.IdRef="HttpClient_4" Method="GET" Password="[Nothing]" Result="[strCapchaResult]" StatusCode="[intStatusCode]" TimeoutMS="10000" Username="[Nothing]">
+            <ui:HttpClient Body="{x:Null}" ConsumerKey="{x:Null}" ConsumerSecret="{x:Null}" ContinueOnError="{x:Null}" FileAttachments="{x:Null}" OAuth1Token="{x:Null}" OAuth1TokenSecret="{x:Null}" OAuth2Token="{x:Null}" ResourcePath="{x:Null}" ResponseAttachment="{x:Null}" ResponseHeaders="{x:Null}" SecureClientCertificatePassword="{x:Null}" SecurePassword="{x:Null}" AcceptFormat="ANY" AuthenticationType="None" BodyFormat="application/xml" ClientCertificate="[Nothing]" ClientCertificatePassword="[Nothing]" DisplayName="get_http_request" EnableSSLVerification="True" EndPoint="https://2captcha.com/res.php" sap:VirtualizedContainerService.HintSize="354,102" sap2010:WorkflowViewState.IdRef="HttpClient_4" Method="GET" Password="[Nothing]" Result="[strCapchaResult]" StatusCode="[intStatusCode]" TimeoutMS="10000" Username="[Nothing]">
               <ui:HttpClient.Attachments>
                 <scg:Dictionary x:TypeArguments="x:String, InArgument(x:String)" />
               </ui:HttpClient.Attachments>
@@ -296,7 +300,7 @@
                 </scg:Dictionary>
               </sap:WorkflowViewStateService.ViewState>
             </ui:LogMessage>
-            <ui:LogMessage DisplayName="log_result" sap:VirtualizedContainerService.HintSize="354,164" sap2010:WorkflowViewState.IdRef="LogMessage_11" Level="Trace" Message="[&quot;-- capcha result : &quot;+strCapchaResult]">
+            <ui:LogMessage DisplayName="log_result" sap:VirtualizedContainerService.HintSize="354,164" sap2010:WorkflowViewState.IdRef="LogMessage_11" Level="Info" Message="[&quot;The captcha result : &quot;+strCapchaResult]">
               <sap:WorkflowViewStateService.ViewState>
                 <scg:Dictionary x:TypeArguments="x:String, x:Object">
                   <x:Boolean x:Key="IsExpanded">True</x:Boolean>
@@ -309,17 +313,18 @@
       </ui:RetryScope.ActivityBody>
       <ui:RetryScope.Condition>
         <ActivityFunc x:TypeArguments="x:Boolean">
-          <ui:CheckTrue ErrorMessage="{x:Null}" DisplayName="check_true" Expression="[strCapchaResult.Contains(&quot;OK|&quot;)]" sap:VirtualizedContainerService.HintSize="334,129" sap2010:WorkflowViewState.IdRef="CheckTrue_4" />
+          <ui:CheckTrue ErrorMessage="{x:Null}" DisplayName="check_true" Expression="[strCapchaResult.ToUpper.Contains(&quot;OK|&quot;)]" sap:VirtualizedContainerService.HintSize="334,129" sap2010:WorkflowViewState.IdRef="CheckTrue_4" />
         </ActivityFunc>
       </ui:RetryScope.Condition>
       <sap:WorkflowViewStateService.ViewState>
         <scg:Dictionary x:TypeArguments="x:String, x:Object">
           <x:Boolean x:Key="IsExpanded">True</x:Boolean>
           <x:Boolean x:Key="IsPinned">False</x:Boolean>
+          <x:Boolean x:Key="IsAnnotationDocked">True</x:Boolean>
         </scg:Dictionary>
       </sap:WorkflowViewStateService.ViewState>
     </ui:RetryScope>
-    <ui:IfElseIf DisplayName="check_capcha_response_is_ok" sap:VirtualizedContainerService.HintSize="458,75" sap2010:WorkflowViewState.IdRef="IfElseIf_2">
+    <ui:IfElseIf DisplayName="check_capcha_response_is_ok" sap:VirtualizedContainerService.HintSize="547,831" sap2010:WorkflowViewState.IdRef="IfElseIf_2">
       <ui:IfElseIf.ConditionBlocks>
         <sc:BindingList x:TypeArguments="ui:IfElseIfBlock" AllowEdit="True" AllowNew="True" AllowRemove="True" RaiseListChangedEvents="True">
           <ui:IfElseIfBlock BlockType="If" Condition="[strCapchaResult.Contains(&quot;OK|&quot;)]" sap2010:WorkflowViewState.IdRef="IfElseIfBlock_2">
@@ -351,13 +356,13 @@
           </ui:IfElseIfBlock>
           <ui:IfElseIfBlock BlockType="Else" sap2010:WorkflowViewState.IdRef="IfElseIfBlock_3">
             <ui:IfElseIfBlock.Then>
-              <Sequence DisplayName="error" sap:VirtualizedContainerService.HintSize="420,178" sap2010:WorkflowViewState.IdRef="Sequence_17">
+              <Sequence DisplayName="error" sap:VirtualizedContainerService.HintSize="416,201" sap2010:WorkflowViewState.IdRef="Sequence_17">
                 <sap:WorkflowViewStateService.ViewState>
                   <scg:Dictionary x:TypeArguments="x:String, x:Object">
                     <x:Boolean x:Key="IsExpanded">True</x:Boolean>
                   </scg:Dictionary>
                 </sap:WorkflowViewStateService.ViewState>
-                <Throw DisplayName="Throw_fail_solving_captcha" Exception="[new Exception(&quot;Fail solving captcha: &quot; + strCapchaResult)]" sap:VirtualizedContainerService.HintSize="358,90" sap2010:WorkflowViewState.IdRef="Throw_3" />
+                <Throw DisplayName="throw_fail_solving_captcha" Exception="[new Exception(&quot;Fail to bypass captcha: &quot; + strCapchaResult)]" sap:VirtualizedContainerService.HintSize="354,113" sap2010:WorkflowViewState.IdRef="Throw_3" />
               </Sequence>
             </ui:IfElseIfBlock.Then>
           </ui:IfElseIfBlock>
@@ -365,10 +370,18 @@
       </ui:IfElseIf.ConditionBlocks>
       <sap:WorkflowViewStateService.ViewState>
         <scg:Dictionary x:TypeArguments="x:String, x:Object">
-          <x:Boolean x:Key="IsExpanded">False</x:Boolean>
+          <x:Boolean x:Key="IsExpanded">True</x:Boolean>
           <x:Boolean x:Key="IsPinned">False</x:Boolean>
         </scg:Dictionary>
       </sap:WorkflowViewStateService.ViewState>
     </ui:IfElseIf>
+    <ui:LogMessage DisplayName="log_wf_finished" sap:VirtualizedContainerService.HintSize="547,75" sap2010:WorkflowViewState.IdRef="LogMessage_15" Level="Info" Message="[String.Format(&quot;--- Finished: {0} ---&quot;, jobInfo.WorkflowName)]">
+      <sap:WorkflowViewStateService.ViewState>
+        <scg:Dictionary x:TypeArguments="x:String, x:Object">
+          <x:Boolean x:Key="IsExpanded">False</x:Boolean>
+          <x:Boolean x:Key="IsPinned">False</x:Boolean>
+        </scg:Dictionary>
+      </sap:WorkflowViewStateService.ViewState>
+    </ui:LogMessage>
   </Sequence>
 </Activity>

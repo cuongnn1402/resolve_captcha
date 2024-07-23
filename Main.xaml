@@ -99,7 +99,7 @@
   <Sequence DisplayName="Main Sequence" sap:VirtualizedContainerService.HintSize="529,815" sap2010:WorkflowViewState.IdRef="Sequence_1">
     <Sequence.Variables>
       <Variable x:TypeArguments="x:String" Name="strCaptchaOutput" />
-      <Variable x:TypeArguments="ui:Image" Name="imgChaptcha" />
+      <Variable x:TypeArguments="ui:Image" Name="imgCaptcha" />
     </Sequence.Variables>
     <sap:WorkflowViewStateService.ViewState>
       <scg:Dictionary x:TypeArguments="x:String, x:Object">
@@ -118,7 +118,7 @@
                 <x:Boolean x:Key="IsExpanded">True</x:Boolean>
               </scg:Dictionary>
             </sap:WorkflowViewStateService.ViewState>
-            <ui:TakeScreenshot WaitBefore="{x:Null}" DisplayName="Take Screenshot 'IMG'" sap:VirtualizedContainerService.HintSize="354,130" sap2010:WorkflowViewState.IdRef="TakeScreenshot_1" Screenshot="[imgChaptcha]">
+            <ui:TakeScreenshot WaitBefore="{x:Null}" DisplayName="Take Screenshot 'IMG'" sap:VirtualizedContainerService.HintSize="354,130" sap2010:WorkflowViewState.IdRef="TakeScreenshot_1" Screenshot="[imgCaptcha]">
               <ui:TakeScreenshot.Target>
                 <ui:Target ClippingRegion="{x:Null}" Element="{x:Null}" Id="569c79fd-0da3-4f1c-990c-c6156f5da6f9" InformativeScreenshot="ad4a9e01ee46f6260d7102a323bc1afa" Selector="&lt;webctrl tableRow='6' tag='TABLE' /&gt;&lt;webctrl tableRow='1' tag='IMG' /&gt;">
                   <ui:Target.TimeoutMS>
@@ -140,9 +140,9 @@
         </scg:Dictionary>
       </sap:WorkflowViewStateService.ViewState>
     </ui:OpenBrowser>
-    <ui:InvokeWorkflowFile ArgumentsVariable="{x:Null}" ContinueOnError="{x:Null}" DisplayName="utils_captcha_api - Invoke Workflow File (utils_captcha_api.xaml)" sap:VirtualizedContainerService.HintSize="467,204" sap2010:WorkflowViewState.IdRef="InvokeWorkflowFile_1" UnSafe="False" WorkflowFileName="utils_captcha_api.xaml">
+    <ui:InvokeWorkflowFile ArgumentsVariable="{x:Null}" ContinueOnError="{x:Null}" DisplayName="utils_bypass_captcha" sap:VirtualizedContainerService.HintSize="467,204" sap2010:WorkflowViewState.IdRef="InvokeWorkflowFile_1" UnSafe="False" WorkflowFileName="utils_bypass_captcha.xaml">
       <ui:InvokeWorkflowFile.Arguments>
-        <InArgument x:TypeArguments="x:String" x:Key="_strImgBase64">[imgChaptcha.Base64]</InArgument>
+        <InArgument x:TypeArguments="x:String" x:Key="_strImgBase64">[imgCaptcha.Base64]</InArgument>
         <InArgument x:TypeArguments="x:String" x:Key="_strApiKey">f312f5dff5478d20cd4c419c5c27a61e</InArgument>
         <OutArgument x:TypeArguments="x:String" x:Key="_strCapcha">[strCaptchaOutput]</OutArgument>
       </ui:InvokeWorkflowFile.Arguments>
